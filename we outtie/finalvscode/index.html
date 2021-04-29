@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NC ZHVI Choropleth woot</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap" rel="stylesheet">
+    
+</head>
+<body style="background-color: rgba(204, 234, 235, 0.644);" id="bodyy">
+
+    <h3 id="daYear"></h3>
+    <input type="range" min="1998" max="2021" value="1998" class="slider" id="myRange" oninput="plotcafo(this.value)">
+    </div>
+
+    <img src="https://janisrae.github.io/GEOG456/Legend.png">
+
+
+    <div id="map"></div>
+    
+
+
+
+    <style>
+        #map { 
+        height: 500px; 
+        margin-right: 20%;
+       }
+       
+       body {
+        font-family: 'Ubuntu Mono', monospace;
+
+       }
+
+       /* #bodyy { */
+           /* text-align: center; */
+       /* } */
+
+       img {
+           height: 300px;
+           width: 300px;
+           float:right;
+           margin-top: 10%;
+       }
+     
+
+
+    .slidecontainer {
+    width: 100%;
+    }
+
+    .slider {
+    -webkit-appearance: none;
+    width: 50%;
+    height: 25px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+    }
+
+    .slider:hover {
+    opacity: 1;
+    }
+
+    .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    background: #F6A134;
+    cursor: pointer;
+    }
+
+    .slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    background: #4CAF50;
+    cursor: pointer;
+    }
+     
+    h3 {
+        font-family: 'Ubuntu Mono', monospace;
+    }
+    p {
+        font-family: 'Ubuntu Mono', monospace;
+    }
+
+    </style>
+    <script src="./data/janis4326.js"></script>
+    <script src="./data/cafogeojsonlegit.js"></script>
+    <script>
+   
+
+ var map=L.map('map').setView([35.76,-79.02], 6);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+ attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+ , tileSize: 512,
+    zoomOffset: -1
+}).addTo(map);
+
+
+function getColor(d) {
+    return d > 400000 ? '#f7fcfd' :
+           d > 350000  ? '#e5f5f9' :
+           d > 300000  ? '#ccece6' :
+           d > 250000  ? '#99d8c9' :
+           d > 200000   ? '#66c2a4' :
+           d > 150000   ? '#41ae76' :
+           d > 100000   ? '#238b45' :
+           d === null ? '#00000022' :
+                      '#005824';
+}
+
+function style(feature) {
+    return {
+        fillColor: getColor(feature.properties.zhvi12_96),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+
+function style1(feature) {
+    return {
+        fillColor: getColor(feature.properties.zhvi12_97),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+
+function style2(feature) {
+    return {
+        fillColor: getColor(feature.properties.zhvi12_98),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+
+function style3(feature) {
+    return {
+        fillColor: getColor(feature.properties.zhvi12_20),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+
+function style4(feature) {
+    return {
+        fillColor: getColor(feature.properties.zhvi12_99),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+
+function style5(feature) {
+    return {
+        fillColor: getColor(feature.properties.zhvi12_00),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+
+function style6(feature) {
+    return {
+        fillColor: getColor(feature.properties.zhvi12_01),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+
+function style7(feature) {
+    return {
+        fillColor: getColor(feature.properties.zhvi12_02),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+
+function style8(feature) {
+    return {
+        fillColor: getColor(feature.properties.zhvi12_03),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+
+function style9(feature) {
+    return {
+        fillColor: getColor(feature.properties.zhvi12_04),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+function style10(feature) {
+    return {
+        fillColor: getColor(feature.properties.zhvi12_05),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+
+function style11(feature) {
+    return {
+        fillColor: getColor(feature.properties.zhvi12_06),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+
+function style12(feature) {
+    return {
+        fillColor: getColor(feature.properties.zhvi12_07),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+
+function style13(feature) {
+    return {
+        fillColor: getColor(feature.properties.zhvi12_08),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+
+function style14(feature) {
+    return {
+        fillColor: getColor(feature.properties.zhvi12_09),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+
+function style15(feature) {
+    return {
+        fillColor: getColor(feature.properties.zhvi12_10),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+
+function style16(feature) {
+    return {
+        fillColor: getColor(feature.properties.zhvi12_11),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+
+function style17(feature) {
+    return {
+        fillColor: getColor(feature.properties.zhvi12_12),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+
+function style18(feature) {
+    return {
+        fillColor: getColor(feature.properties.zhvi12_13),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+
+function style19(feature) {
+    return {
+        fillColor: getColor(feature.properties.zhvi12_14),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+
+function style20(feature) {
+    return {
+        fillColor: getColor(feature.properties.zhvi12_15),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+
+function style21(feature) {
+    return {
+        fillColor: getColor(feature.properties.zhvi12_16),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+
+function style22(feature) {
+    return {
+        fillColor: getColor(feature.properties.zhvi12_17),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+
+function style23(feature) {
+    return {
+        fillColor: getColor(feature.properties.zhvi12_18),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+
+function style24(feature) {
+    return {
+        fillColor: getColor(feature.properties.zhvi12_19),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+
+function style25(feature) {
+    return {
+        fillColor: getColor(feature.properties.zhvi2_21),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+
+var year1996 = L.geoJson(woo, {style: style}).addTo(map);
+var year1997 = L.geoJson(woo, {style: style1}).addTo(map);
+var year1998 = L.geoJson(woo, {style: style2}).addTo(map);
+var year1999 = L.geoJson(woo, {style: style4}).addTo(map);
+var year2000 = L.geoJson(woo, {style: style5}).addTo(map);
+var year2001 = L.geoJson(woo, {style: style6}).addTo(map);
+var year2002 = L.geoJson(woo, {style: style7}).addTo(map);
+var year2003 = L.geoJson(woo, {style: style8}).addTo(map);
+var year2004 = L.geoJson(woo, {style: style9}).addTo(map);
+var year2005 = L.geoJson(woo, {style: style10}).addTo(map);
+var year2006 = L.geoJson(woo, {style: style11}).addTo(map);
+var year2007 = L.geoJson(woo, {style: style12}).addTo(map);
+var year2008 = L.geoJson(woo, {style: style13}).addTo(map);
+var year2009 = L.geoJson(woo, {style: style14}).addTo(map);
+var year2010 = L.geoJson(woo, {style: style15}).addTo(map);
+var year2011 = L.geoJson(woo, {style: style16}).addTo(map);
+var year2012 = L.geoJson(woo, {style: style17}).addTo(map);
+
+var year2013 = L.geoJson(woo, {style: style18}).addTo(map);
+var year2014 = L.geoJson(woo, {style: style19}).addTo(map);
+var year2015 = L.geoJson(woo, {style: style20}).addTo(map);
+var year2016 = L.geoJson(woo, {style: style21}).addTo(map);
+var year2017 = L.geoJson(woo, {style: style22}).addTo(map);
+var year2018 = L.geoJson(woo, {style: style23}).addTo(map);
+var year2019 = L.geoJson(woo, {style: style24}).addTo(map);
+
+
+
+var year2020 = L.geoJson(woo, {style: style3}).addTo(map);
+
+var year2021 = L.geoJson(woo, {style: style25}).addTo(map);
+
+var geojsonMarkerOptions = {
+    radius: 1.5,
+    fillColor: "#F6A134",
+    color: "#000",
+    weight: 0,
+    opacity: 1,
+    fillOpacity: 0.8,
+    
+};
+
+var cafolayer2012 = null;
+
+
+function plotcafo(year) {
+    document.getElementById('daYear').innerHTML = 'CAFOs (Concentrated Animal Feeding Operations) in North Carolina each Year: ' +year; 
+ if (cafolayer2012) {
+    map.removeLayer(cafolayer2012);
+ }   
+ cafolayer2012 = new L.geoJSON(cafo, {
+    pointToLayer: function (feature, latlng) {
+        if (feature.properties.year <= year) {
+        return L.circleMarker(latlng, geojsonMarkerOptions);
+    }
+}
+})
+cafolayer2012.addTo(map);
+}
+
+
+plotcafo("1998")
+
+//var years = L.layerGroup([year1996]);
+
+var overlayMaps = {
+    "1996": year1996, 
+    "1997" : year1997,
+    "1998" : year1998,
+    "1999" : year1999,
+    "2000" : year2000,
+
+    "2001": year2001, 
+    "2002" : year2002,
+    "2003" : year2003,
+    "2004" : year2004,
+    "2005" : year2005,
+
+    "2006": year2006, 
+    "2007" : year2007,
+    "2008" : year2008,
+    "2009" : year2009,
+    "2010" : year2010,
+
+    "2011": year2011, 
+    "2012" : year2012,
+    "2013" : year2013,
+    "2014" : year2014,
+    "2015" : year2015,
+
+    "2016": year2016, 
+    "2017" : year2017,
+    "2018" : year2018,
+    "2019" : year2019,
+    "2020" : year2020,
+
+    "2021" : year2021,
+
+};
+
+L.control.layers({}, overlayMaps).addTo(map);
+
+// var slider = document.getElementById('myRange')
+// slider.onchange = function() {
+//     console.log(this.value)
+// };
+
+    </script>
+
+<br>
+<h3> Background </h3>
+<p>
+Concentrated Animal Feeding Operations, also known as CAFOs are large scale facilities that raise animals for agriculture. 
+To be classified as a CAFO, these facilities are animal feeding operations with at least 1000 animal units, which is equivalent to 1000 pounds live weight.
+There are many problems associated with the presence of CAFOs, as these facilties cause many environmental and health impacts. 
+Issues such as air and water quality pollution, pathogens, and odor come from CAFOs.
+<br>
+<br>
+I wanted to see the relationship between CAFOs and property value in NC. I found property value data from Zillow, which has a ZHVI.
+ZHVI (Zillow Home Value Index) is an algorithim that algorithm that takes into account tax data, home characteristics to estimate current and historical market value of properties. 
+I used the ZHVI for each county from 1996-2021 to show property value over time, and used a slider to demonstrate CAFO locations in NC over time.
+<br>
+<br>
+Sources: 
+https://www.nrcs.usda.gov/wps/portal/nrcs/main/national/plantsanimals/livestock/afo/#:~:text=A%20CAFO%20is%20an%20AFO,confined%20on%20site%20for%20more
+https://content.sierraclub.org/grassrootsnetwork/team-news/2019/12/hog-chicken-cafos-north-carolina
+
+
+</body>
+</html>
